@@ -9,7 +9,7 @@ const StartContainer = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 88vh;
+  height: 87.5vh;
   background-color: #000;
   /* justify-content: space-evenly; */
   align-items: center;

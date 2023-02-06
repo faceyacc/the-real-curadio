@@ -10,7 +10,7 @@ const StyledLoginContainer = styled.main`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 88vh;
+  height: 87.5vh;
   background-color: #000;
   justify-content: space-evenly;
   align-items: center;
@@ -68,12 +68,9 @@ const Login = () => {
               <StyledSubHeadline>
               Curated content tailor for you, made for you, just for you                
               </StyledSubHeadline>  
-
-                {/* <Link to="/start"> */}
-                  <StyledLoginButton href="http://localhost:8888/login">
-                      Login
-                  </StyledLoginButton>
-                {/* </Link>                           */}
+                <StyledLoginButton href="http://localhost:8888/login">
+                    Login
+                </StyledLoginButton>
           </StyledHeadline>
           <StyledGif>
               <img  src={spotify1} />
