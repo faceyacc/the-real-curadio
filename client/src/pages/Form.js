@@ -1,8 +1,9 @@
 import styled from 'styled-components/macro'
 import { Header } from '../components'
 import * as React from 'react';
-// import Box from '@mui/joy/Box';
-// import Input from '@mui/joy/Input';
+import { useState } from 'react';
+import { redirect, useNavigate } from 'react-router-dom'
+
 
 
 const Input = styled.input`
@@ -15,8 +16,7 @@ const Input = styled.input`
     background-color: black;
     border-bottom: 1px solid grey;
     width: 570px;
-  
-    /* here we use the dynamically computed prop */
+    
     margin-top: 100px;
     margin-bottom: 20px;
     padding-left: 0px;
@@ -42,16 +42,6 @@ const StyledHeadline = styled.h1`
     font-size: 50px;
 
 `
-
-const StyledSubHeadline = styled.h1`
-    color: silver;
-    margin-bottom: 50px;
-    margin-left: 1px;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 19px;    
-`
-
 const StyledOkButton = styled.a`
   line-height: 15px;
   margin-right: 490px;
@@ -72,27 +62,47 @@ const StyledOkButton = styled.a`
     filter: brightness(1.1);
   }
 `
-
-
-
 const questions = ['How are you feeling today?', 
                    'What type of music you feel like listening to?',
-                   'What activty are currently doing?']
-
+                   'What activity are currently doing?',]
+let current_question = 0
 
 const Forms = () => {
+    const [question, setQuestion] = useState(questions[current_question])
+    const [userInput, setUserInput] = useState('')
+    let navigate = useNavigate()
 
-    const nextQuestion = () => {}
+    // Onclick function to reload next question
+    const nextQuestion = () => {
+      
+      if (current_question === questions.length) {
+        console.log('DONE')
 
+        
+        
+
+
+        navigate('./playlist')
+        
+
+      }
+
+      setQuestion(questions[current_question])
+      current_question++
+    }
+
+    const onUserChangedText = (event) => {
+      console.log(event.target.value);
+      setUserInput(event.target.value)
+    }
 
     return (
         <>
             <Header/>
             <StartContainer>
-                <StyledHeadline>{questions[0]}</StyledHeadline>
-                <Input placeholder="Type here" />
-
-                <StyledOkButton>
+                <StyledHeadline>{question}</StyledHeadline>
+                <Input placeholder="Type here" onChange={onUserChangedText}/>
+                <StyledOkButton onClick={nextQuestion}>
                         Ok
                 </StyledOkButton>
             </StartContainer>

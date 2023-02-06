@@ -8,13 +8,13 @@ import {BrowserRouter as Router,
   useLocation,
   Route
 } from "react-router-dom";
-import { Start, Form, Login, Home } from './pages';
+import { Start, Form, Login, Home, Playlist } from './pages';
 
 
 
 const StyledLogoutButton = styled.button`
   position: absolute;
-  top: var(--spacing-sm);
+  top: 37px;
   right: var(--spacing-md);
   padding: var(--spacing-xs) var(--spacing-sm);
   background-color: rgba(0,0,0,.7);
@@ -70,6 +70,8 @@ function App() {
               <Routes>
                 
                 <Route path="/start" element={ <Start/> }></Route>
+
+                <Route path="/forms/playlist" element={ <Playlist/> }></Route>
 
                 <Route path="/forms" element={ <Form/> }></Route>                          
 
