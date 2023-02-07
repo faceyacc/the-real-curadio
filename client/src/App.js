@@ -71,7 +71,7 @@ function App() {
                 
                 <Route path="/start" element={ <Start/> }></Route>
 
-                <Route path="/forms/playlist" element={ <Playlist/> }></Route>
+                {/* <Route path="/forms/playlist" element={ <Playlist/> }></Route> */}
 
                 <Route path="/forms" element={ <Form/> }></Route>                          
 
