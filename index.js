@@ -134,7 +134,6 @@ user prompt:
 `
 
 
-
 app.post('/generate', async (req, res) => {
   // Send a request to OpenAI    
   try {
@@ -147,8 +146,26 @@ app.post('/generate', async (req, res) => {
       max_tokens: 250,    
     })
     const basePromptOutput = baseCompletion.data.choices.pop()
+
+
+    const parseSongsPromptPrefix = `
+    Take this response and parse to be an list of strings in javascript: ${basePromptOutput.text}
+    `
+    console.log(`ParseSong prompt prefix: ==> ${parseSongsPromptPrefix}`)    
+
+    const parseSongCompletion = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `${parseSongsPromptPrefix}`,
+      temperature: 0.7,
+      max_tokens: 250,    
+    })
+
+    const parseSongsOutput = parseSongCompletion.data.choices.pop()
+
         
-    res.status(200).json({ output: basePromptOutput })
+    res.status(200).json({ output: parseSongsOutput })
+
+    console.log(parseSongsOutput)
 
   } catch (error) {
       if (error.response) {
