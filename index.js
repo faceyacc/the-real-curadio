@@ -122,33 +122,32 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+app.use(express.json())
+
 const openai = new OpenAIApi(configuration)
 
 const basePromptPrefix = 
 `
-I am going to list my mood, a genre of music, time of day, and what I am currently doing. I want ChatGPT-3 to create the best playlist for me base on the aforementioned points:
+I am going to list my mood, a genre of music, and what I am currently doing. I want ChatGPT-3 to create the best playlist for me base on the aforementioned points. Your response should only be a list of songs in an array
 
 user prompt:
 `
 
+
+
 app.post('/generate', async (req, res) => {
-  // res.header("Access-Control-Allow-Origin", "true");
-  
-  // return res.status(200).json('hej hej')
-
-
-
+  // Send a request to OpenAI    
   try {
-    // Send a request to OpenAI
+    console.log(`${basePromptPrefix}${req.body.userInput}\n`)
+
     const baseCompletion = await openai.createCompletion({
       model: "text-davinci-003",
-      // prompt: `${basePromptPrefix}${req.body.userInput}\n`,
-      prompt: `${basePromptPrefix}`,
+      prompt: `${basePromptPrefix}${req.body.userInput}\n`,
       temperature: 0.7,
       max_tokens: 250,    
     })
     const basePromptOutput = baseCompletion.data.choices.pop()
-    
+        
     res.status(200).json({ output: basePromptOutput })
 
   } catch (error) {
@@ -156,10 +155,20 @@ app.post('/generate', async (req, res) => {
         console.log(error.response.status)
         console.log(error.response.data)
       } else {
-        console.log(`ERROR HERE======> ${error.message}`)
+        console.log(error.message)
       }
   }
 });
+
+
+app.post('/generate/parse-songs', async (req, res) => {
+  try {  const baseCompletion = await openai.createCompletion({})
+
+    const parseSongsOutput = parseSongsPromptPrefix = baseCompletion.data.choices.pop()
+
+    res.status(200).json({ output: parseSongsOutput })
+    } catch (error) {}
+})
 
 
 app.listen(port, () => {

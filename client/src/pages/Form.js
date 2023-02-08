@@ -6,9 +6,6 @@ import axios from 'axios'
 
 // import { useNavigate } from 'react-router-dom'
 
-
-
-
 const Input = styled.input`
     &:focus {
       outline: none;
@@ -49,7 +46,7 @@ const StyledOkButton = styled.a`
   margin-right: 490px;
   margin-top: 10px;
   display: inline-block;
-  background-color: #121bff;
+  background-color: #603dd3;
   color: var(--white);
   border-radius: 10px;
   font-weight: 7 00;
@@ -70,7 +67,7 @@ const StyledFinishButton = styled.a`
   margin-right: 10px;
   margin-top: 10px;
   display: inline-block;
-  background-color: #121bff;
+  background-color: #603dd3;
   color: var(--white);
   border-radius: 10px;
   font-weight: 7 00;
@@ -87,16 +84,19 @@ const StyledFinishButton = styled.a`
   }
 `
 
-
 const questions = ['How are you feeling today?', 
                    'What type of music you feel like listening to?',
-                   'What activity are currently doing?',]
+                   'What activity are currently doing?']
+
+let userResponse = ""                   
 let current_question = 0
 
 const Forms = () => {
     const [question, setQuestion] = useState(questions[current_question])
-    // const [userInput, setUserInput] = useState('')
+    const [userInput, setUserInput] = useState('')
     const [endQuestions, setEndQuestions] = useState(false)
+    const [apiOutput, setApiOutput] = useState('')
+    
 
     // let navigate = useNavigate()
 
@@ -107,32 +107,34 @@ const Forms = () => {
       event.preventDefault()
       
 
-      const body = JSON.stringify({ userInput: "hej hej" })
+      const body = JSON.stringify({ userInput: userResponse })
     
-      
       axios.post('http://localhost:8888/generate', body)
         .then((res) => {
+          setApiOutput(res.data.output.text)
+          console.log(typeof(res.data.output.text))
           console.log(res.data.output.text)
+          console.log(res.data.output)
         })
-
-
     }    
 
     // Onclick function to reload next question
     const nextQuestion = () => {
-      
+      current_question++
       if (current_question === questions.length) { 
-        setEndQuestions(true)  
+        setEndQuestions(true)
       }
 
       setQuestion(questions[current_question])
-      current_question++
+      userResponse += ` ${userInput.toString()}`
+      
+      
     }
 
     const onUserChangedText = (event) => {
-      console.log(event.target.value);
-      // setUserInput(event.target.value)
+      setUserInput(event.target.value)     
     }
+    
 
     return (
         <>
@@ -144,6 +146,7 @@ const Forms = () => {
                 <StyledFinishButton onClick={callGenerateEndpoint}>
                   Get Playlist
                 </StyledFinishButton>
+                {apiOutput}
               </> 
               : 
               <>
@@ -154,6 +157,7 @@ const Forms = () => {
                 </StyledOkButton>
               </>}                
             </StartContainer>
+            
         </>
     )
 }
