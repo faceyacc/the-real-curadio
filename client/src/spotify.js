@@ -119,6 +119,30 @@ export const logout = () => {
   window.location = window.location.origin;
 }
 
+// Helper function
+const search_song = (track, artist) => {
+  track = track.replace(/ /g, '%20')
+  artist = artist.replace(/ /g, '%20')
+  const baseURL = `search?q=track:${track}artist:${artist}&type=track`
+  
+  return baseURL
+}
+
+
+/**
+ * Get song by track name and artits' name
+ * @param {string} track - track's name
+ * @param {string} artist - artist's name
+ */
+export const getTrack = (track, artist) => {
+  const url = search_song(track, artist)
+  console.log(`https://api.spotify.com/v1/${url}`)
+  return axios.get(`/${url}`)
+}
+
+
+
+
 export const accessToken = getAccessToken()
 
 /**

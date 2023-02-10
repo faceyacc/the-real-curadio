@@ -3,6 +3,7 @@ import { Header } from '../components'
 import * as React from 'react';
 import { useState } from 'react';
 import axios from 'axios'
+import { getTrack } from '../spotify'
 
 // import { useNavigate } from 'react-router-dom'
 
@@ -110,7 +111,10 @@ const Forms = () => {
       const body = JSON.stringify({ userInput: userResponse })
     
       axios.post('http://localhost:8888/generate', body)
-        .then((res) => {
+        .then(async (res) => {
+          
+          const { data } = await getTrack('adorn', 'miguel')
+          console.log(data)
           setApiOutput(res.data.output.text)
           console.log(typeof(res.data.output.text))
           console.log(res.data.output.text)

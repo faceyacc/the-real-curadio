@@ -149,7 +149,7 @@ app.post('/generate', async (req, res) => {
 
 
     const parseSongsPromptPrefix = `
-    Take this response and parse to be an list of strings in javascript: ${basePromptOutput.text}
+    Take this response and turn it to an an javascript dictionary of strings. Do not include anything else other than the javascript dictionary array: Chat GPT-Response: ${basePromptOutput.text}
     `
     console.log(`ParseSong prompt prefix: ==> ${parseSongsPromptPrefix}`)    
 
