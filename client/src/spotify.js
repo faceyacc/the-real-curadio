@@ -123,7 +123,7 @@ export const logout = () => {
 const search_song = (track, artist) => {
   track = track.replace(/ /g, '%20')
   artist = artist.replace(/ /g, '%20')
-  const baseURL = `search?q=track:${track}artist:${artist}&type=track`
+  const baseURL = `search?q=track:${track}%20artist:${artist}&type=track`
   
   return baseURL
 }
@@ -136,7 +136,7 @@ const search_song = (track, artist) => {
  */
 export const getTrack = (track, artist) => {
   const url = search_song(track, artist)
-  console.log(`https://api.spotify.com/v1/${url}`)
+  // console.log(`https://api.spotify.com/v1/${url}`)
   return axios.get(`/${url}`)
 }
 

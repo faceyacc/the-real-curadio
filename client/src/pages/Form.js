@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import axios from 'axios'
 import { getTrack } from '../spotify'
+import { useEffect } from 'react';
 
 // import { useNavigate } from 'react-router-dom'
 
@@ -92,35 +93,42 @@ const questions = ['How are you feeling today?',
 let userResponse = ""                   
 let current_question = 0
 
+let arr = []
+let arrx = ['hej']
+
 const Forms = () => {
     const [question, setQuestion] = useState(questions[current_question])
     const [userInput, setUserInput] = useState('')
     const [endQuestions, setEndQuestions] = useState(false)
     const [apiOutput, setApiOutput] = useState('')
-    
+    const [sendRequest, setSendRequesst] = useState(false)
 
     // let navigate = useNavigate()
 
+    useEffect(() => {
+      // Function to call backend to generate respsonse from
+      // OpenAI API
+      if (sendRequest) {          
+          const body = JSON.stringify({ userInput: userResponse })
+        
+          axios.post('http://localhost:8888/generate', body)
+            .then(async (res) => {
+              
+              const { data } = await getTrack('adorn', 'miguel')
+              const x = data.tracks.items[0].album.images[1].url
+              
+  
+              setApiOutput(x)
+              arr.push(x)
+              // console.log(arr[0])          
+            })
+        // }    
+      }
 
-    // Function to call backend to generate respsonse from
-    // OpenAI API
-    const callGenerateEndpoint = async (event) => {
-      event.preventDefault()
-      
+    },[sendRequest])
 
-      const body = JSON.stringify({ userInput: userResponse })
-    
-      axios.post('http://localhost:8888/generate', body)
-        .then(async (res) => {
-          
-          const { data } = await getTrack('adorn', 'miguel')
-          console.log(data)
-          setApiOutput(res.data.output.text)
-          console.log(typeof(res.data.output.text))
-          console.log(res.data.output.text)
-          console.log(res.data.output)
-        })
-    }    
+
+
 
     // Onclick function to reload next question
     const nextQuestion = () => {
@@ -147,10 +155,9 @@ const Forms = () => {
               {endQuestions ? 
               <>
                 <StyledHeadline>Ready!</StyledHeadline>
-                <StyledFinishButton onClick={callGenerateEndpoint}>
+                <StyledFinishButton onClick={() => setSendRequesst(true)}>
                   Get Playlist
                 </StyledFinishButton>
-                {apiOutput}
               </> 
               : 
               <>
@@ -159,7 +166,8 @@ const Forms = () => {
                 <StyledOkButton onClick={nextQuestion}>
                   Ok
                 </StyledOkButton>
-              </>}                
+              </>}               
+              <img src={arr[0]} /> 
             </StartContainer>
             
         </>
