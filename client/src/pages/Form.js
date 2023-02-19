@@ -63,7 +63,6 @@ const StyledOkButton = styled.a`
     filter: brightness(1.1);
   }
 `
-
 const StyledFinishButton = styled.a`
   line-height: 15px;
   margin-right: 10px;
@@ -94,40 +93,102 @@ let userResponse = ""
 let current_question = 0
 
 let arr = []
-let arrx = ['hej']
 
 const Forms = () => {
     const [question, setQuestion] = useState(questions[current_question])
     const [userInput, setUserInput] = useState('')
     const [endQuestions, setEndQuestions] = useState(false)
-    const [apiOutput, setApiOutput] = useState('')
+    const [apiOutput, setApiOutput] = useState([])
     const [sendRequest, setSendRequesst] = useState(false)
 
     // let navigate = useNavigate()
 
-    useEffect(() => {
-      // Function to call backend to generate respsonse from
-      // OpenAI API
-      if (sendRequest) {          
-          const body = JSON.stringify({ userInput: userResponse })
-        
-          axios.post('http://localhost:8888/generate', body)
-            .then(async (res) => {
-              
-              const { data } = await getTrack('adorn', 'miguel')
-              const x = data.tracks.items[0].album.images[1].url
-              
+    // Helper Function
+    // Parse songs from GPT Response
+    const parseSongs = (listOfSongs) => {
+      let songs = {}
+      let data = JSON.stringify(listOfSongs)
+
+      // Need to JSON.parse twice to get object
+      let song_dict = JSON.parse(JSON.parse(data))
+
+      for (let [artist, song] of Object.entries(song_dict)) {
+        songs[artist] = song
+      }
+      return songs
+    }
+
+
+    // Helper Function
+    // Takes in object of songs {artistName, songName} and
+    // returns songs assets {artisstImage, trackName, artistName}
+
+    const getSongsAssets = async (songs) => {
+      let counter = 0;
+      const SONG_LIMIT = 7
+      const songAssets = []
+
+      // Calls Spotify API to get song assets
+      for(let [artist, song] of Object.entries(songs)) {
+        if (counter == SONG_LIMIT) {
+          break;
+        } else {
+          counter = counter + 1
+          let track_query = song + ' ' + artist
+
+          const { data } = await getTrack(track_query)
+          const artist_image = data.tracks.items[0].album.images[1].url
+          const track_name = data.tracks.items[0].name
+          const artist_name = data.tracks.items[0].artists[0].name
   
-              setApiOutput(x)
-              arr.push(x)
-              // console.log(arr[0])          
-            })
-        // }    
+          const asset = {
+            image: artist_image,
+            track_name: track_name,
+            artist_name: artist_name
+          }
+          console.log(asset)
+  
+          songAssets.push({ asset })
+        }
       }
 
+      console.log(songAssets)
+    }
+
+
+    
+    useEffect(() => {
+      if (sendRequest) {  
+        const body = JSON.stringify({ userInput: userResponse })
+      
+        // Call backend to generate respsonse from OpenAI API
+        axios.post('http://localhost:8888/generate', body)
+          .then(async (res) => {
+            
+            // Returns a object of songs: {"song_name", "artist_name"}
+            const songs = parseSongs(res.data.output.text)
+            console.log(songs)
+            getSongsAssets(songs)
+            
+            
+
+            // Calls Spotify API to get song assets
+            // const { data } = await getTrack('adorn', 'miguel')
+            // const artist_image = data.tracks.items[0].album.images[1].url
+            // const track_name = data.tracks.items[0].name
+            // const artist_name = data.tracks.items[0].artists[0].name
+
+            // console.log({
+            //   image: artist_image,
+            //   track_name: track_name,
+            //   artist_name: artist_name
+            // })
+
+            // console.log(data)
+            // setApiOutput(arr => arr.concat(artist_image))                  
+        })
+      }
     },[sendRequest])
-
-
 
 
     // Onclick function to reload next question
@@ -167,7 +228,7 @@ const Forms = () => {
                   Ok
                 </StyledOkButton>
               </>}               
-              <img src={arr[0]} /> 
+              <img src={apiOutput} /> 
             </StartContainer>
             
         </>

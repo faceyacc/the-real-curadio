@@ -149,7 +149,10 @@ app.post('/generate', async (req, res) => {
 
 
     const parseSongsPromptPrefix = `
-    Take this response and turn it to an an javascript dictionary of strings. Do not include anything else other than the javascript dictionary array: Chat GPT-Response: ${basePromptOutput.text}
+    Take this response and turn it to an an javascript dictionary of strings. 
+    Do not include anything else other than the javascript dictionary array. 
+    The format of the output should be the following: "{"artist name": "song name"}" 
+    Chat GPT-Response: ${basePromptOutput.text}
     `
     console.log(`ParseSong prompt prefix: ==> ${parseSongsPromptPrefix}`)    
 
@@ -179,7 +182,9 @@ app.post('/generate', async (req, res) => {
 
 
 app.post('/generate/parse-songs', async (req, res) => {
-  try {  const baseCompletion = await openai.createCompletion({})
+  try {  
+    
+    const baseCompletion = await openai.createCompletion({})
 
     const parseSongsOutput = parseSongsPromptPrefix = baseCompletion.data.choices.pop()
 
