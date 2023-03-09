@@ -1,4 +1,3 @@
-import { StyledGrid } from "../styles";
 import { StyledTrackList } from '../styles';
 
 
@@ -22,11 +21,9 @@ const Playlist = ({ artists }) => {
                   {artist.data.tracks.items[0].name}
                 </div>
                 <div className="track__item__artist overflow-ellipsis">
-                  {/* {artists.map((artist, i) => ( */}
                     <span key={i}>
                       {artist.data.tracks.items[0].artists[0].name} {/*{i !== artist.data.tracks.items[0].artists.length - 1 && ','}*/}
                     </span>
-                  {/* ))} */}
                 </div>
               </div>
             </div>
