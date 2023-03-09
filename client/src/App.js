@@ -9,6 +9,7 @@ import {BrowserRouter as Router,
   Route
 } from "react-router-dom";
 import { Start, Form, Login, Home, Playlist } from './pages';
+import Artist from './pages/Artist';
 
 
 
@@ -71,7 +72,9 @@ function App() {
                 
                 <Route path="/start" element={ <Start/> }></Route>
 
-                {/* <Route path="/forms/playlist" element={ <Playlist/> }></Route> */}
+                <Route path="/playlist" element={ <Playlist/> }></Route>
+
+                <Route path="/artist" element={ <Artist/> }></Route>
 
                 <Route path="/forms" element={ <Form/> }></Route>                          
 
