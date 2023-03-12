@@ -122,8 +122,7 @@ export const logout = () => {
 // Helper function
 const search_song = (track) => {
   track = track.replace(/ /g, '%2520')
-  const baseURL = `search?q=${track}&type=track`
-  
+  const baseURL = `search?q=${track}&type=track`  
   return baseURL
 }
 
@@ -135,7 +134,6 @@ const search_song = (track) => {
  */
 export const getTrack = (track, artist) => {
   const url = search_song(track, artist)
-  console.log(url)
   return axios.get(`/${url}`)
 }
 
@@ -143,7 +141,6 @@ export const getTrack = (track, artist) => {
 
 
 export const accessToken = getAccessToken()
-
 /**
  * Axios global request headers
  * https://github.com/axios/axios#global-axios-defaults

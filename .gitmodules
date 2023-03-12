@@ -1,0 +1,3 @@
+[submodule "own-moves"]
+	path = own-moves
+	url = https://github.com/faceyacc/grooves.git

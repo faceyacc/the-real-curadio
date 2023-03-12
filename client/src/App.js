@@ -86,7 +86,7 @@ function App() {
 
                 <Route path="/playlists/" element={<h1>Playlists</h1>}></Route>
       
-                <Route path="/" element={ <Start/> }></Route>
+                <Route path="/" element={ <Home/> }></Route>
               </Routes> 
             </Router>
           </>

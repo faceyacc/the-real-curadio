@@ -6,9 +6,6 @@ import axios from "axios";
 import { getTrack } from "../spotify";
 import { useEffect } from "react";
 import Playlist from "../components/Playlist";
-import { Link, useNavigate } from "react-router-dom";
-
-// import { useNavigate } from 'react-router-dom'
 
 const Input = styled.input`
   &:focus {
@@ -85,6 +82,10 @@ const StyledFinishButton = styled.a`
     filter: brightness(1.1);
   }
 `;
+const StyledTitle = styled.h1`
+  margin-bottom: 5%;
+  margin-right: 4%;
+`
 
 const questions = [
   "How are you feeling today?",
@@ -104,7 +105,7 @@ const Forms = () => {
   const [sendRequest, setSendRequesst] = useState(false);
   const [songs, setSongs] = useState();
 
-  // Helper Function
+  
   // Parse songs from GPT Response
   const parseSongs = (listOfSongs) => {
     let songs = {};
@@ -119,15 +120,13 @@ const Forms = () => {
     return songs;
   };
 
-  // Helper Function
   // Takes in object of songs {artistName, songName} and
   // returns songs assets {artisstImage, trackName, artistName}
-
   useEffect(() => {
     const getSongsAssets = async (songs) => {
       let data = null;
       let counter = 0;
-      const searchLimit = 5;
+      const searchLimit = 9;
       const songAssets = [];
 
       // Calls Spotify API to get song assets
@@ -138,6 +137,7 @@ const Forms = () => {
           counter++;
           let track_query = song + " " + artist;
           data = await getTrack(track_query);
+          // console.log('DATA', data)
           songAssets.push(data);
         }
       }
@@ -151,6 +151,7 @@ const Forms = () => {
       axios.post("http://localhost:8888/generate", body).then(async (res) => {
         // Returns a object of songs: {"song_name", "artist_name"}
         const songs = parseSongs(res.data.output.text);
+        console.log('SONGS:', songs)
 
         try {
           let songAssets = await getSongsAssets(songs);
@@ -181,11 +182,10 @@ const Forms = () => {
   return (
     <>
       <Header />
-
       <StartContainer>
         {songs ? (
           <>
-            <h1>Enjoy the tunes 😍</h1>
+            <StyledTitle>Enjoy the tunes 😍</StyledTitle>
             <Playlist artists={songs} />
           </>
         ) : (

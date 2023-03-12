@@ -5,16 +5,17 @@ import logo from '../styles/assets/logo.png'
 
 const HeaderContainer = styled.header`
   display: flex;
+
   align-items: center;
   padding: 2rem 4rem;
   background-color: black;
   color: #fff;
+  margin-bottom: 1rem;
 `
 
 const HeaderLink = styled.a`
   color: #fff;
   text-decoration: none;
-  
   margin-right: 5rem;
   &:last-of-type {
     margin-right: 0;
