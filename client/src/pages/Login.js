@@ -71,7 +71,7 @@ const Login = () => {
               <StyledSubHeadline>
               Curated content tailor for you, made for you, just for you                
               </StyledSubHeadline>  
-                <StyledLoginButton href="http://localhost:8888/login">
+                <StyledLoginButton href={LOGIN_URI}>
                     Login
                 </StyledLoginButton>
           </StyledHeadline>
