@@ -57,6 +57,9 @@ const StyledGif = styled.div`
     margin-right: 20px;
 `
 
+const LOGIN_URI =  process.env.NODE_ENV !== 'production' ? 'http://localhost:8888/login' : 
+'https://the-real-curadio-6xz10mlb6-faceyacc.vercel.app/login'
+
 
 const Login = () => {
   return (
@@ -68,7 +71,7 @@ const Login = () => {
               <StyledSubHeadline>
               Curated content tailor for you, made for you, just for you                
               </StyledSubHeadline>  
-                <StyledLoginButton href="http://localhost:8888/login">
+                <StyledLoginButton href={LOGIN_URI}>
                     Login
                 </StyledLoginButton>
           </StyledHeadline>
