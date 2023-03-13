@@ -8,7 +8,6 @@ const express = require('express')
 const querystring = require('node:querystring')
 const app = express()
 const axios = require('axios')
-const port = 8888
 
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
@@ -85,7 +84,7 @@ app.get('/callback', (req, res) => {
           expires_in
         })
 
-        res.redirect(`${FRONTEND_URI}/?${queryParams}`);
+        res.redirect(`${FRONTEND_URI}?${queryParams}`);
 
       } else {
         res.redirect(`/?${querystring.stringify({ error: 'invalid_token' })}`);
@@ -191,7 +190,9 @@ app.post('/generate/parse-songs', async (req, res) => {
     const parseSongsOutput = parseSongsPromptPrefix = baseCompletion.data.choices.pop()
 
     res.status(200).json({ output: parseSongsOutput })
-    } catch (error) {}
+    } catch (error) {
+      res.send(error)
+    }
 })
 
 
